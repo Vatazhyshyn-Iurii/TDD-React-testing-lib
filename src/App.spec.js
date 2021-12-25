@@ -33,6 +33,9 @@ const server = setupServer(
   rest.get('/api/1.0/users/:id', (req, res, cts) => {
     const id = parseInt(req.params.id);
     return res(cts.json({ id, username: `user${id}`, email: `user${id}@gmail.com`, image: null }));
+  }),
+  rest.post('/api/1.0/auth', (request, response, context) => {
+    return response(context.status(401));
   })
 );
 

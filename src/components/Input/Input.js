@@ -10,7 +10,7 @@ const Input = ({
   value,
   placeholder,
   type = 'text',
-  setErrors,
+  setErrors = () => {},
 }) => {
   const inputClassname = classNames('form-control', errorMessage && 'is-invalid');
   const errorMessageClassname = classNames(errorMessage && 'invalid-feedback');
