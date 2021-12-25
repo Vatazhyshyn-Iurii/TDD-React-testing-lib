@@ -1,0 +1,12 @@
+{
+  "signUp": "Реєстрація",
+  "login": "Вхід",
+  "username": "Ім'я користувача",
+  "email": "Електронна пошта",
+  "password": "Пароль",
+  "passwordRepeat": "Повтор пароля",
+  "passwordMismatchValidation": "Пароль не співпадає",
+  "users": "Користувачі",
+  "nextPage": "наступна сторінка",
+  "prevPage": "попередня сторінка"
+}
