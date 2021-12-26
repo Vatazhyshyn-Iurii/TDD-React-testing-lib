@@ -35,7 +35,7 @@ const server = setupServer(
     return res(cts.json({ id, username: `user${id}`, email: `user${id}@gmail.com`, image: null }));
   }),
   rest.post('/api/1.0/auth', (request, response, context) => {
-    return response(context.status(401));
+    return response(context.status(200), context.json({ username: 'user5' }));
   })
 );
 
@@ -47,12 +47,12 @@ beforeAll(() => server.listen());
 
 afterAll(() => server.close());
 
-describe('Routing', () => {
-  const setup = (path) => {
-    window.history.pushState({}, '', path);
-    render(<App />);
-  };
+const setup = (path) => {
+  window.history.pushState({}, '', path);
+  render(<App />);
+};
 
+describe('Routing', () => {
   it.each`
     path               | pageTestId
     ${'/'}             | ${'home-page'}
@@ -138,6 +138,22 @@ describe('Routing', () => {
     const page = await screen.queryByTestId('user-page');
 
     expect(page).toBeInTheDocument();
+  });
+});
+
+describe('Login', () => {
+  xit('redirects to Home page after the successful login', async () => {
+    setup('/login');
+    const emailInput = screen.getByTestId('email');
+    const passwordInput = screen.getByTestId('password');
+    const loginButton = screen.queryByTestId('login-button');
+
+    userEvent.type(emailInput, 'user5@gmail.com');
+    userEvent.type(passwordInput, 'P4ssword');
+    userEvent.click(loginButton);
+    const homePage = await screen.queryByTestId('home-page');
+
+    expect(homePage).toBeInTheDocument();
   });
 });
 

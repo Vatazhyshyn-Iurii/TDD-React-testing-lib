@@ -1,15 +1,28 @@
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 import { act, render, screen, waitForElementToBeRemoved } from '@testing-library/react';
-import Login from './Login';
 import React from 'react';
+import en from '../../i18/en.json';
 import userEvent from '@testing-library/user-event';
+
+import Login from './Login';
+import LanguageSelector from '../LanguageSelector/LanguageSelector';
+import ua from '../../i18/ua.json';
 
 let requestBody;
 let count;
+let acceptLanguageHeader;
+
+const mockedUsedNavigate = jest.fn();
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: () => mockedUsedNavigate,
+}));
+
 const server = setupServer(
   rest.post('/api/1.0/auth', (request, response, context) => {
     requestBody = request.body;
+    acceptLanguageHeader = request.headers.get('Accept-Language');
     return response(context.status(401), context.json({ message: 'Incorrect credentials' }));
   })
 );
@@ -152,6 +165,71 @@ describe('Login page', () => {
       expect(message).toBeInTheDocument();
       userEvent.type(passwordInput, 'somePass');
       expect(message).not.toBeInTheDocument();
+    });
+  });
+
+  describe('Internationalization', () => {
+    let languageToggle;
+
+    const setup = () => {
+      render(
+        <>
+          <Login />
+          <LanguageSelector />
+        </>
+      );
+
+      languageToggle = screen.queryByTestId('change-language');
+    };
+
+    it('Initially displays all texts in English', () => {
+      setup();
+
+      expect(screen.queryByTestId('header', { name: en.login })).toBeInTheDocument();
+      expect(screen.queryByTestId('login-button', { name: en.login })).toBeInTheDocument();
+      expect(screen.getByLabelText(en.email)).toBeInTheDocument();
+      expect(screen.getByLabelText(en.password)).toBeInTheDocument();
+    });
+
+    it('Displays all texts in Ukraine', () => {
+      setup();
+      userEvent.click(languageToggle);
+
+      expect(screen.queryByTestId('header', { name: ua.login })).toBeInTheDocument();
+      expect(screen.queryByTestId('login-button', { name: ua.login })).toBeInTheDocument();
+      expect(screen.getByLabelText(ua.email)).toBeInTheDocument();
+      expect(screen.getByLabelText(ua.password)).toBeInTheDocument();
+    });
+
+    it('sets accept language header to "en" for ongoing request', async () => {
+      setup();
+      const emailInput = screen.getByTestId('email');
+      const passwordInput = screen.getByTestId('password');
+      const loginButton = screen.queryByTestId('login-button');
+
+      userEvent.type(emailInput, 'user1@gmail.com');
+      userEvent.type(passwordInput, 'p4ssword');
+      userEvent.click(loginButton);
+      const spinner = await screen.getByTestId('spinner');
+      await waitForElementToBeRemoved(spinner);
+
+      expect(acceptLanguageHeader).toBe('en');
+    });
+
+    it('sets accept language header to "ua" for ongoing request', async () => {
+      setup();
+      const emailInput = screen.getByTestId('email');
+      const passwordInput = screen.getByTestId('password');
+      const loginButton = screen.queryByTestId('login-button');
+
+      userEvent.type(emailInput, 'user1@gmail.com');
+      userEvent.type(passwordInput, 'p4ssword');
+      userEvent.click(languageToggle);
+      userEvent.click(loginButton);
+      const spinner = await screen.getByTestId('spinner');
+      await waitForElementToBeRemoved(spinner);
+
+      expect(acceptLanguageHeader).toBe('ua');
     });
   });
 });

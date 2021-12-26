@@ -1,16 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+
 import { login } from '../../api/apiCalls';
 
 import Input from '../Input/Input';
-import Spinner from '../Spinner/Spinner';
 import Alert from '../Alert/Alert';
+import Button from '../Button/Button';
 
-const Login = ({ t }) => {
+const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [apiProgress, setApiProgress] = useState(false);
   const [error, setError] = useState('');
+  const [ready, setReady] = useState(false);
+  const { t } = useTranslation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (email || password) {
@@ -18,14 +23,22 @@ const Login = ({ t }) => {
     }
   }, [email, password]);
 
+  useEffect(() => {
+    if (ready) {
+      navigate(`/`);
+    }
+  }, [ready, navigate]);
+
   const submit = async (e) => {
     e.preventDefault();
 
     setApiProgress(true);
     setError('');
+    setReady(false);
 
     try {
       await login({ email, password });
+      setReady(true);
     } catch (error) {
       if (error.response.status === 401) {
         setError(error.response.data.message);
@@ -39,7 +52,9 @@ const Login = ({ t }) => {
     <div className="col-lg-6 offset-lg-3 col-md-8 offset-md-2" data-testid="login-page">
       <form className="card" data-testid="login-form">
         <div className="card-header">
-          <h1 className="text-center">{t('login')}</h1>
+          <h1 className="text-center" data-testid="header">
+            {t('login')}
+          </h1>
         </div>
         <div className="card-body">
           <Input
@@ -63,19 +78,16 @@ const Login = ({ t }) => {
         </div>
         {error && <Alert type="danger" text={error} />}
         <div className="text-center">
-          <button
-            className="btn btn-primary mb-3"
-            data-testid="login-button"
+          <Button
             disabled={!email || !password || apiProgress}
             onClick={submit}
-          >
-            {apiProgress && <Spinner size="small" />}
-            {t('login')}
-          </button>
+            label="login"
+            apiProgress={apiProgress}
+          />
         </div>
       </form>
     </div>
   );
 };
 
-export default withTranslation()(Login);
+export default Login;

@@ -92,14 +92,14 @@ describe('Sign Up page', () => {
 
     it('has header sign up button', () => {
       render(<SignUp />);
-      const header = screen.queryByTestId('submit-button');
+      const header = screen.queryByTestId('signUp-button');
 
       expect(header).toBeInTheDocument();
     });
 
     it('button initialize with disable status', () => {
       render(<SignUp />);
-      const submitButton = screen.queryByTestId('submit-button');
+      const submitButton = screen.queryByTestId('signUp-button');
 
       expect(submitButton).toBeDisabled();
     });
@@ -119,7 +119,7 @@ describe('Sign Up page', () => {
       emailInput = screen.getByTestId('email');
       passwordInput = screen.getByTestId('password');
       repeatPasswordInput = screen.getByTestId('repeat-password');
-      submitButton = screen.queryByTestId('submit-button');
+      submitButton = screen.queryByTestId('signUp-button');
 
       userEvent.type(userNameInput, 'user1');
       userEvent.type(emailInput, 'user@mail.com');
@@ -132,7 +132,7 @@ describe('Sign Up page', () => {
 
       const passwordInput = screen.getByTestId('password');
       const repeatPasswordInput = screen.getByTestId('repeat-password');
-      const submitButton = screen.queryByTestId('submit-button');
+      const submitButton = screen.queryByTestId('signUp-button');
 
       userEvent.type(passwordInput, 'p4ssword');
       userEvent.type(repeatPasswordInput, 'p4ssword');
@@ -367,7 +367,7 @@ describe('Sign Up page', () => {
 
     it('sends accept language header as "en" for outgoing request', async () => {
       setUp();
-      const submitButton = screen.queryByTestId('submit-button');
+      const submitButton = screen.queryByTestId('signUp-button');
       const form = screen.queryByTestId('signUp-form');
       userEvent.type(passwordInput, 'P4ssword');
       userEvent.type(passwordRepeatInput, 'P4ssword');
@@ -379,7 +379,7 @@ describe('Sign Up page', () => {
 
     it('sends accept language header as "ua" for outgoing request after electing that language', async () => {
       setUp();
-      const submitButton = screen.queryByTestId('submit-button');
+      const submitButton = screen.queryByTestId('signUp-button');
       const form = screen.queryByTestId('signUp-form');
       userEvent.click(languageToggle);
       userEvent.type(passwordInput, 'P4ssword');

@@ -138,7 +138,7 @@ describe('UserList component', () => {
     it('displays the next page link', async () => {
       setup();
       await screen.findByText(/user1/);
-      const nextBtn = screen.queryByTestId('next-page-btn');
+      const nextBtn = screen.queryByTestId('nextPage-button');
 
       expect(nextBtn).toBeInTheDocument();
     });
@@ -146,7 +146,7 @@ describe('UserList component', () => {
     it('displays the next page after clicking next page button', async () => {
       setup();
       await screen.findByText(/user1/);
-      const nextBtn = screen.queryByTestId('next-page-btn');
+      const nextBtn = screen.queryByTestId('nextPage-button');
       userEvent.click(nextBtn);
       const firstUserOnNextPage = await screen.findByText(/user6/);
 
@@ -156,7 +156,7 @@ describe('UserList component', () => {
     it('makes disabled the next page button on the last page', async () => {
       setup();
       await screen.findByText(/user1/);
-      const nextBtn = screen.queryByTestId('next-page-btn');
+      const nextBtn = screen.queryByTestId('nextPage-button');
       userEvent.click(nextBtn);
       await screen.findByText(/user6/);
       userEvent.click(nextBtn);
@@ -168,7 +168,7 @@ describe('UserList component', () => {
     it('makes disabled the previous page button on the first page', async () => {
       render(<UserList />);
       await screen.findByText(/user1/);
-      const prevBtn = screen.queryByTestId('prev-page-btn');
+      const prevBtn = screen.queryByTestId('prevPage-button');
 
       expect(prevBtn).toBeDisabled();
     });
@@ -178,9 +178,9 @@ describe('UserList component', () => {
         setup();
       });
       await screen.findByText(/user1/);
-      const prevBtn = await screen.queryByTestId('prev-page-btn');
+      const prevBtn = await screen.queryByTestId('prevPage-button');
       act(() => {
-        userEvent.click(screen.queryByTestId('next-page-btn'));
+        userEvent.click(screen.queryByTestId('nextPage-button'));
       });
       expect(prevBtn.getAttribute('disabled')).toBe('');
     });

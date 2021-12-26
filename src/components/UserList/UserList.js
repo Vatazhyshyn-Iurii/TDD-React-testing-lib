@@ -6,6 +6,7 @@ import { fetchUsers } from '../../api/apiCalls';
 import Spinner from '../Spinner/Spinner';
 import Alert from '../Alert/Alert';
 import UserItem from '../UserItem/UserItem';
+import Button from '../Button/Button';
 
 import './userList.css';
 
@@ -62,22 +63,18 @@ const UserList = () => {
         </div>
       ) : null}
       <div className="card-footer text-center">
-        <button
-          className="btn btn-outline-secondary"
-          data-testid="prev-page-btn"
+        <Button
           disabled={pageData.page === 0 || status === 'loading'}
           onClick={() => loadPrevPage(pageData.page - 1)}
-        >
-          {t('prevPage')}
-        </button>
-        <button
-          className="btn btn-outline-secondary"
-          data-testid="next-page-btn"
+          label="prevPage"
+          type="outline-secondary"
+        />
+        <Button
           disabled={pageData.page === pageData.totalPages - 1 || status === 'loading'}
           onClick={() => loadNextPage(pageData.page + 1)}
-        >
-          {t('nextPage')}
-        </button>
+          label="nextPage"
+          type="outline-secondary"
+        />
       </div>
     </div>
   );

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { withTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 
 import { signUp } from '../../api/apiCalls';
 
@@ -8,8 +8,9 @@ import Alert from '../Alert/Alert';
 import Spinner from '../Spinner/Spinner';
 
 import './signUp.css';
+import Button from '../Button/Button';
 
-const SignUp = ({ t }) => {
+const SignUp = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -17,6 +18,7 @@ const SignUp = ({ t }) => {
   const [disabled, setDisabled] = useState(true);
   const [apiProgress, setApiProgress] = useState(false);
   const [signUpSuccess, setSignUpSuccess] = useState(false);
+  const { t } = useTranslation();
 
   const [errors, setErrors] = useState({
     username: '',
@@ -130,15 +132,12 @@ const SignUp = ({ t }) => {
             />
           </div>
           <div className="text-center">
-            <button
-              className="btn btn-primary mb-3"
-              data-testid="submit-button"
+            <Button
               disabled={disabled || apiProgress}
               onClick={submit}
-            >
-              {apiProgress && <Spinner size="small" />}
-              {t('signUp')}
-            </button>
+              label="signUp"
+              apiProgress={apiProgress}
+            />
           </div>
         </form>
       )}
@@ -147,4 +146,4 @@ const SignUp = ({ t }) => {
   );
 };
 
-export default withTranslation()(SignUp);
+export default SignUp;

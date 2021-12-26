@@ -41,6 +41,7 @@
   "devDependencies": {
     "i18next": "^21.5.3",
     "msw": "^0.35.0",
+    "prop-types": "^15.8.0",
     "react-i18next": "^11.14.3"
   },
   "proxy": "http://localhost:8080"
