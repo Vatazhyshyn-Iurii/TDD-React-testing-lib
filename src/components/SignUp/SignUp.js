@@ -5,7 +5,6 @@ import { signUp } from '../../api/apiCalls';
 
 import Input from '../Input/Input';
 import Alert from '../Alert/Alert';
-import Spinner from '../Spinner/Spinner';
 
 import './signUp.css';
 import Button from '../Button/Button';

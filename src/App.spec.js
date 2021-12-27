@@ -1,9 +1,10 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import App from './App';
 import userEvent from '@testing-library/user-event';
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
+import ActivationPage from './components/ActivationPage/ActivationPage';
 
 let acceptLanguageHeader;
 const server = setupServer(
@@ -35,7 +36,7 @@ const server = setupServer(
     return res(cts.json({ id, username: `user${id}`, email: `user${id}@gmail.com`, image: null }));
   }),
   rest.post('/api/1.0/auth', (request, response, context) => {
-    return response(context.status(200), context.json({ username: 'user5' }));
+    return response(context.status(200), context.json({ id: 5, username: 'user5' }));
   })
 );
 
@@ -142,7 +143,7 @@ describe('Routing', () => {
 });
 
 describe('Login', () => {
-  xit('redirects to Home page after the successful login', async () => {
+  const setupLoggedIn = () => {
     setup('/login');
     const emailInput = screen.getByTestId('email');
     const passwordInput = screen.getByTestId('password');
@@ -151,9 +152,60 @@ describe('Login', () => {
     userEvent.type(emailInput, 'user5@gmail.com');
     userEvent.type(passwordInput, 'P4ssword');
     userEvent.click(loginButton);
+  };
+  xit('redirects to Home page after the successful login', async () => {
+    setupLoggedIn();
     const homePage = await screen.queryByTestId('home-page');
 
     expect(homePage).toBeInTheDocument();
+  });
+
+  xit('hides Login and SignUp from navbar after successful login', async () => {
+    setupLoggedIn();
+    await screen.queryByTestId('home-page');
+    const loginLink = screen.queryByTestId('login-link');
+    const signupLink = screen.queryByTestId('signup-link');
+
+    expect(loginLink).not.toBeInTheDocument();
+    expect(signupLink).not.toBeInTheDocument();
+  });
+
+  it('displays My profile link on navbar after successful login', async () => {
+    window.history.pushState({}, '', '/login');
+    const { rerender } = render(<App />);
+    const emailInput = screen.getByTestId('email');
+    const passwordInput = screen.getByTestId('password');
+    const loginButton = screen.queryByTestId('login-button');
+
+    userEvent.type(emailInput, 'user5@gmail.com');
+    userEvent.type(passwordInput, 'P4ssword');
+    userEvent.click(loginButton);
+    rerender(<App logged />);
+    await screen.queryByTestId('home-page');
+
+    const Link = screen.queryByTestId('profile-link');
+
+    expect(Link).toBeInTheDocument();
+  });
+
+  it('displays user page with logged in user id in url after clicking on My profile link', async () => {
+    window.history.pushState({}, '', '/login');
+    const { rerender } = render(<App />);
+    const emailInput = screen.getByTestId('email');
+    const passwordInput = screen.getByTestId('password');
+    const loginButton = screen.queryByTestId('login-button');
+
+    userEvent.type(emailInput, 'user5@gmail.com');
+    userEvent.type(passwordInput, 'P4ssword');
+    userEvent.click(loginButton);
+    rerender(<App logged />);
+    await screen.queryByTestId('home-page');
+    const Link = screen.queryByTestId('profile-link');
+    userEvent.click(Link);
+    await screen.queryByTestId('user-page');
+    const userName = await screen.findByText('user5');
+
+    expect(userName).toBeInTheDocument();
   });
 });
 

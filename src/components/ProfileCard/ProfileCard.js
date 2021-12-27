@@ -4,7 +4,7 @@ import defProfileImg from '../../assets/profile.png';
 
 const ProfileCard = ({ user }) => {
   return (
-    <div className="card text-center">
+    <div className="card text-center" data-testid="profile-card">
       <div className="card-header">
         <img
           className="rounded-circle shadow"

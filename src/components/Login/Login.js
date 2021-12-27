@@ -8,7 +8,7 @@ import Input from '../Input/Input';
 import Alert from '../Alert/Alert';
 import Button from '../Button/Button';
 
-const Login = () => {
+const Login = ({ setAuth }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [apiProgress, setApiProgress] = useState(false);
@@ -37,8 +37,9 @@ const Login = () => {
     setReady(false);
 
     try {
-      await login({ email, password });
+      const response = await login({ email, password });
       setReady(true);
+      setAuth({ isLoggedIn: true, id: response.data.id });
     } catch (error) {
       if (error.response.status === 401) {
         setError(error.response.data.message);

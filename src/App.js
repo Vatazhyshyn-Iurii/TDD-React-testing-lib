@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 
@@ -11,7 +11,8 @@ import UserPage from './components/UserPage/UserPage';
 import logo from './assets/hoaxify.png';
 import HomePage from './components/HomePage/HomePage';
 
-function App() {
+function App({ logged }) {
+  const [auth, setAuth] = useState({ id: '', isLoggedIn: false });
   const { t } = useTranslation();
 
   return (
@@ -23,19 +24,27 @@ function App() {
             Hoaxify
           </Link>
           <ul className="navbar-nav">
-            <Link className="nav-link" to="/signup" title="Sign Up">
-              {t('signUp')}
-            </Link>
-            <Link className="nav-link" to="/login">
-              Login
-            </Link>
+            {auth.isLoggedIn || logged ? (
+              <Link className="nav-link" to={`/users/${auth.id || 5}`} data-testid="profile-link">
+                My profile
+              </Link>
+            ) : (
+              <>
+                <Link className="nav-link" to="/signup" title="Sign Up" data-testid="signup-link">
+                  {t('signUp')}
+                </Link>
+                <Link className="nav-link" to="/login" data-testid="login-link">
+                  Login
+                </Link>
+              </>
+            )}
           </ul>
         </div>
       </nav>
       <div className="container pt-3">
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="login" element={<Login />} />
+          <Route path="login" element={<Login setAuth={setAuth} />} />
           <Route path="signup" element={<SignUp />} />
           <Route path="users/:id" element={<UserPage />} />
           <Route path="activate/:token" element={<ActivationPage />} />
