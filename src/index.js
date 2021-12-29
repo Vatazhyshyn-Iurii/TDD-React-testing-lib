@@ -5,10 +5,13 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 import './i18/i18n';
+import AuthContextWrapper from './state/AuthContextWrapper';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <AuthContextWrapper>
+      <App />
+    </AuthContextWrapper>
   </React.StrictMode>,
   document.getElementById('root')
 );

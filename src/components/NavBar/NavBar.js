@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../../assets/hoaxify.png';
 import { useTranslation } from 'react-i18next';
+import { AuthContext } from '../../App';
 
-const NavBar = ({ auth, logged }) => {
+const NavBar = ({ logged }) => {
+  const auth = useContext(AuthContext);
   const { t } = useTranslation();
 
   return (
