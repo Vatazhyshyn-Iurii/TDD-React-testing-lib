@@ -1,11 +1,10 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../../assets/hoaxify.png';
 import { useTranslation } from 'react-i18next';
-import { AuthContext } from '../../App';
+import { connect } from 'react-redux';
 
-const NavBar = ({ logged }) => {
-  const auth = useContext(AuthContext);
+const NavBar = ({ logged, reducer }) => {
   const { t } = useTranslation();
 
   return (
@@ -16,8 +15,8 @@ const NavBar = ({ logged }) => {
           Hoaxify
         </Link>
         <ul className="navbar-nav">
-          {auth.isLoggedIn || logged ? (
-            <Link className="nav-link" to={`/users/${auth.id || 5}`} data-testid="profile-link">
+          {reducer.isLoggedIn || logged ? (
+            <Link className="nav-link" to={`/users/${reducer.id || 5}`} data-testid="profile-link">
               My profile
             </Link>
           ) : (
@@ -36,4 +35,4 @@ const NavBar = ({ logged }) => {
   );
 };
 
-export default NavBar;
+export default connect((reducer) => ({ ...reducer }), {})(NavBar);

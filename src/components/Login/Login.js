@@ -7,8 +7,10 @@ import { login } from '../../api/apiCalls';
 import Input from '../Input/Input';
 import Alert from '../Alert/Alert';
 import Button from '../Button/Button';
+import { useDispatch } from 'react-redux';
+import { actions } from '../../redux/actions';
 
-const Login = ({ setAuth }) => {
+const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [apiProgress, setApiProgress] = useState(false);
@@ -16,6 +18,7 @@ const Login = ({ setAuth }) => {
   const [ready, setReady] = useState(false);
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (email || password) {
@@ -39,7 +42,8 @@ const Login = ({ setAuth }) => {
     try {
       const response = await login({ email, password });
       setReady(true);
-      setAuth({ isLoggedIn: true, id: response.data.id });
+      dispatch(actions.loginSuccess(response.data.id));
+      // setAuth({ isLoggedIn: true, id: response.data.id });
     } catch (error) {
       if (error.response.status === 401) {
         setError(error.response.data.message);

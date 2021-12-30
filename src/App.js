@@ -26,7 +26,6 @@ function App({ logged }) {
             <Route path="users/:id" element={<UserPage />} />
             <Route path="activate/:token" element={<ActivationPage />} />
           </Routes>
-
           <LanguageSelector />
         </div>
       </BrowserRouter>
