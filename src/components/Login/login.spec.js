@@ -1,6 +1,6 @@
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
-import { act, render, screen, waitForElementToBeRemoved } from '@testing-library/react';
+import { act, render, screen, waitForElementToBeRemoved } from '../../test/setup';
 import React from 'react';
 import en from '../../i18/en.json';
 import userEvent from '@testing-library/user-event';

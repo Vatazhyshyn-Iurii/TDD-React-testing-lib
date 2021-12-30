@@ -1,15 +1,10 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import { ThemeProvider } from 'my-ui-lib';
-import { TranslationProvider } from 'my-i18n-lib';
-import defaultStrings from 'i18n/en-x-default';
+import { Provider } from 'react-redux';
+import Store from '../redux/store';
 
 const AllTheProviders = ({ children }) => {
-  return (
-    <ThemeProvider theme="light">
-      <TranslationProvider messages={defaultStrings}>{children}</TranslationProvider>
-    </ThemeProvider>
-  );
+  return <Provider store={Store()}>{children}</Provider>;
 };
 
 const customRender = (ui, options) => render(ui, { wrapper: AllTheProviders, ...options });

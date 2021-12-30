@@ -1,5 +1,5 @@
 import React from 'react';
-import { act, render, screen, waitFor } from '@testing-library/react';
+import { act, render, screen, waitFor } from '../../test/setup';
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
 import UserPage from './UserPage';

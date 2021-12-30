@@ -4,7 +4,7 @@ import logo from '../../assets/hoaxify.png';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 
-const NavBar = ({ logged, reducer }) => {
+const NavBar = ({ logged, authReducer }) => {
   const { t } = useTranslation();
 
   return (
@@ -15,8 +15,12 @@ const NavBar = ({ logged, reducer }) => {
           Hoaxify
         </Link>
         <ul className="navbar-nav">
-          {reducer.isLoggedIn || logged ? (
-            <Link className="nav-link" to={`/users/${reducer.id || 5}`} data-testid="profile-link">
+          {authReducer.isLoggedIn || logged ? (
+            <Link
+              className="nav-link"
+              to={`/users/${authReducer.id || 5}`}
+              data-testid="profile-link"
+            >
               My profile
             </Link>
           ) : (
@@ -35,4 +39,4 @@ const NavBar = ({ logged, reducer }) => {
   );
 };
 
-export default connect((reducer) => ({ ...reducer }), {})(NavBar);
+export default connect((authReducer) => ({ ...authReducer }), {})(NavBar);

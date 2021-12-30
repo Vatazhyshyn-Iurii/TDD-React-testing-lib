@@ -2,7 +2,7 @@ import React from 'react';
 
 import defProfileImg from '../../assets/profile.png';
 
-const ProfileCard = ({ user, auth }) => {
+const ProfileCard = ({ user }) => {
   return (
     <div className="card text-center" data-testid="profile-card">
       <div className="card-header">

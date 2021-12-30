@@ -5,7 +5,7 @@ const initialState = {
   isLoggedIn: false,
 };
 
-export const reducer = (state = initialState, { type, payload }) => {
+export const authReducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case LOGIN_SUCCESS:
       return {

@@ -1,21 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { applyMiddleware, combineReducers, createStore, compose } from 'redux';
 
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { reducer } from './redux/reducer';
-
 import './i18/i18n';
-
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const rootReducer = combineReducers({ reducer });
-const store = createStore(rootReducer, composeEnhancers(applyMiddleware()));
+import Store from './redux/store';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
+    <Provider store={Store()}>
       <App />
     </Provider>
   </React.StrictMode>,
