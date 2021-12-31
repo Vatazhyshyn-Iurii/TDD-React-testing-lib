@@ -4,7 +4,7 @@ import App from './App';
 import userEvent from '@testing-library/user-event';
 import { setupServer } from 'msw/node';
 import { rest } from 'msw';
-import ActivationPage from './components/ActivationPage/ActivationPage';
+import { storage } from './state/storage';
 
 let acceptLanguageHeader;
 const server = setupServer(
@@ -206,6 +206,16 @@ describe('Login', () => {
     const userName = await screen.findByText('user5');
 
     expect(userName).toBeInTheDocument();
+  });
+
+  describe('LocalStorage', () => {
+    fit('stores logged in state in local storage', async () => {
+      setupLoggedIn();
+      await screen.queryByTestId('home-page');
+      const auth = storage.getItem('auth');
+
+      expect(auth.isLoggedIn).toBeTruthy();
+    });
   });
 });
 

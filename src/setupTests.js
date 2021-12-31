@@ -5,9 +5,11 @@
 import '@testing-library/jest-dom';
 import { act } from '@testing-library/react';
 import i18n from './i18/i18n';
+import { storage } from './state/storage';
 
 afterEach(() => {
   act(() => {
     i18n.changeLanguage('en');
   });
+  storage.clearItem();
 });
