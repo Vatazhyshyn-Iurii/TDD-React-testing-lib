@@ -16,7 +16,7 @@ export const authReducer = (
     case LOGIN_SUCCESS:
       return {
         ...state,
-        id: payload,
+        ...payload,
         isLoggedIn: true,
       };
     default:

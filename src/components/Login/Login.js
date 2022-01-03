@@ -42,7 +42,7 @@ const Login = () => {
     try {
       const response = await login({ email, password });
       setReady(true);
-      dispatch(actions.loginSuccess(response.data.id));
+      dispatch(actions.loginSuccess({ ...response.data, header: `Bearer ${response.data.token}` }));
       // setAuth({ isLoggedIn: true, id: response.data.id });
     } catch (error) {
       if (error.response.status === 401) {

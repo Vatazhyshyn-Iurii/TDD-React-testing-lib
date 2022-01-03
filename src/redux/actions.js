@@ -6,9 +6,9 @@ export const LOGIN_FAILURE = 'LOGIN_FAILURE';
 export const actions = {
   loginBegin: () => ({ type: LOGIN_BEGIN }),
   loginFailure: (error) => ({ type: LOGIN_FAILURE, payload: error }),
-  loginSuccess: (id) => ({
+  loginSuccess: (data) => ({
     type: LOGIN_SUCCESS,
-    payload: id,
+    payload: data,
   }),
   login: (id) => ({}),
 };

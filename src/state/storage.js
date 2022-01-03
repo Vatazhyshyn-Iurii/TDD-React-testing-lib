@@ -1,19 +1,9 @@
-export const storage = {
-  setItem: (key, value) => {
-    localStorage.setItem(key, JSON.stringify(value));
-  },
-  getItem: (key) => {
-    const storedState = localStorage.getItem(key);
+import SecureLS from 'secure-ls';
 
-    if (!storedState) {
-      return null;
-    } else {
-      try {
-        return JSON.parse(storedState);
-      } catch (e) {
-        return storedState;
-      }
-    }
-  },
+const serureLs = new SecureLS();
+
+export const storage = {
+  setItem: (key, value) => serureLs.set(key, value),
+  getItem: (key) => serureLs.get(key),
   clearItem: () => localStorage.clear(),
 };
